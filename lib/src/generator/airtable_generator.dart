@@ -62,7 +62,7 @@ class AirTableGenerator implements PlatformGenerator {
   }
 
   @override
-  String validArguments(ConfigOption config) {
+  String? validArguments(ConfigOption config) {
     if (null == config.apiKey) {
       return 'Argument "api-key" is missing';
     }
@@ -87,7 +87,7 @@ class AirTableGenerator implements PlatformGenerator {
   }
 
   void processRecords(JsonBuilder jsonBuilder, List<dynamic> records) {
-    String jsonKeyHeader = jsonBuilder.getJsonKeyHeader();
+    final jsonKeyHeader = jsonBuilder.getJsonKeyHeader();
     List<ExtractedHeader> localeHeaderList = jsonBuilder.getMessageLocaleHeaderList();
 
     for (dynamic record in records) {

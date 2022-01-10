@@ -8,7 +8,7 @@ import 'dart:convert' show json;
 
 class JsonBuilder {
   List<ExtractedHeader> localeMessageHeaderList = [];
-  ExtractedHeader jsonKeyHeader;
+  ExtractedHeader? jsonKeyHeader;
 
   // <Header, FileName>
   Map<String, String> localeFileNameMap = {};
@@ -29,8 +29,8 @@ class JsonBuilder {
     return null != jsonKeyHeader && localeMessageHeaderList.isNotEmpty;
   }
 
-  String getJsonKeyHeader() {
-    return jsonKeyHeader.header;
+  String? getJsonKeyHeader() {
+    return jsonKeyHeader?.header;
   }
 
   List<ExtractedHeader> getMessageLocaleHeaderList() {
@@ -38,7 +38,7 @@ class JsonBuilder {
   }
 
   void writeData(String jsonKey, String localeHeader, String message) {
-    Map localeBuilder = localeStringBuilderMap[localeHeader];
+    final localeBuilder = localeStringBuilderMap[localeHeader];
     if (null != localeBuilder) {
       List<String> keys = jsonKey.split(".");
       Map root = localeBuilder;
@@ -57,7 +57,7 @@ class JsonBuilder {
     }
   }
 
-  void generateFiles(String outputDir) {
+  void generateFiles(String? outputDir) {
     Directory current = Directory.current;
 
     for (MapEntry<String, String> fileEntry in localeFileNameMap.entries) {
@@ -67,13 +67,13 @@ class JsonBuilder {
         generatedFile.createSync(recursive: true);
       }
 
-      Map localeBuilder = localeStringBuilderMap[fileEntry.key];
+      final localeBuilder = localeStringBuilderMap[fileEntry.key];
       // Generate File
       generatedFile.writeAsStringSync(json.encode(localeBuilder));
     }
   }
 
-  ExtractedHeader _pullJsonKeyHeaderFromList(List<ExtractedHeader> headers) {
+  ExtractedHeader? _pullJsonKeyHeaderFromList(List<ExtractedHeader> headers) {
     for (ExtractedHeader header in headers) {
       if (ContentType.key == header.type) {
         headers.remove(header);
